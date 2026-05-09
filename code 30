@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <pthread.h>
+
+void *myThread(void *arg) {
+    printf("Thread is running.\n");
+
+    if (pthread_equal(pthread_self(), *(pthread_t *)arg))
+        printf("Threads are equal.\n");
+
+    pthread_exit("Thread exited successfully");
+}
+
+int main() {
+    pthread_t tid;
+    void *msg;
+
+    // Create
+    pthread_create(&tid, NULL, myThread, &tid);
+
+    // Join
+    pthread_join(tid, &msg);
+
+    printf("%s\n", (char *)msg);
+
+    return 0;
+}
