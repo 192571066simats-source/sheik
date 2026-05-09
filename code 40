@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <sys/stat.h>
+
+int main() {
+    struct stat fileStat;
+    char filename[100];
+    int i;
+
+    printf("Enter file name: ");
+    scanf("%s", filename);
+
+    if (stat(filename, &fileStat) == -1) {
+        printf("File not found!\n");
+        return 1;
+    }
+
+    printf("\nFile Access Permissions in Linux\n");
+    printf("--------------------------------\n");
+
+    /* User Types */
+    printf("User Types:\n");
+    printf("1. Owner (u)\n");
+    printf("2. Group (g)\n");
+    printf("3. Others (o)\n\n");
+
+    /* Permission symbols */
+    printf("Permissions: Read(r), Write(w), Execute(x)\n\n");
+
+    /* Display permissions */
+    printf("Permissions for file '%s': ", filename);
+
+    for (i = 8; i >= 0; i--) {
+        if (fileStat.st_mode & (1 << i)) {
+            switch (i % 3) {
+                case 2: printf("r"); break;
+                case 1: printf("w"); break;
+                case 0: printf("x"); break;
+            }
+        } else {
+            printf("-");
+        }
+    }
+
+    printf("\n");
+
+    return 0;
+}
