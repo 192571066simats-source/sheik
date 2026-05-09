@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *fp;
+    char ch;
+    int choice;
+    char filename[] = "sample.txt";
+
+    while (1) {
+        printf("\n1.Create & Write\n2.Read\n3.Append\n4.Delete\n5.Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                fp = fopen(filename, "w");
+                printf("Enter text (end with #): ");
+                getchar();
+                while ((ch = getchar()) != '#')
+                    fputc(ch, fp);
+                fclose(fp);
+                break;
+
+            case 2:
+                fp = fopen(filename, "r");
+                if (fp == NULL) {
+                    printf("File not found!\n");
+                    break;
+                }
+                while ((ch = fgetc(fp)) != EOF)
+                    putchar(ch);
+                fclose(fp);
+                break;
+
+            case 3:
+                fp = fopen(filename, "a");
+                printf("Enter text to append (end with #): ");
+                getchar();
+                while ((ch = getchar()) != '#')
+                    fputc(ch, fp);
+                fclose(fp);
+                break;
+
+            case 4:
+                remove(filename);
+                printf("File deleted.\n");
+                break;
+
+            case 5:
+                exit(0);
+        }
+    }
+}
